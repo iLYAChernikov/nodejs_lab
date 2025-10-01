@@ -62,3 +62,13 @@ app.get("/", (req, res) => {
 app.get("/catalog", (req, res) => {
 	res.status(200).json(goods)
 })
+
+app.get("/catalog/:id", (req, res) => {
+	const prod = goods.find(g => g.id == Number(req.params.id))
+	res.status(200).json(prod)
+})
+
+app.get("/catalog/f/:cat", (req, res) => {
+	const prods = goods.filter(g => g.category.toLowerCase() === req.params.cat.toLowerCase())
+	res.status(200).json(prods)
+})
