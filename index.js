@@ -66,12 +66,12 @@ app.get("/catalog", (req, res) => {
 })
 
 app.get("/catalog/:id", (req, res) => {
-	const prod = goods.find(g => g.id == Number(req.params.id))
+	const prod = goods.find(g => g.id == req.params.id)
 	res.status(200).json(prod)
 })
 
 app.get("/catalog/f/:cat", (req, res) => {
-	const prods = goods.filter(g => g.category.toLowerCase() === req.params.cat.toLowerCase())
+	const prods = goods.filter(g => g.category.toLowerCase() == req.params.cat.toLowerCase())
 	res.status(200).json(prods)
 })
 
@@ -101,4 +101,27 @@ app.post("/catalog/add/:cat", (req, res) => {
 	}
 	goods.push(newProd)
 	res.status(200).json(newProd)
+})
+
+app.put("/catalog/:id", (req, res) => {
+	const chProd = {
+		id: req.params.id,
+		name: req.body.name,
+		category: req.body.category,
+		unit: req.body.unit,
+		price: req.body.price,
+		weight_grams: req.body.weight_grams,
+		expiration_date: req.body.expiration_date
+	}
+	for (let i = 0; i < goods.length; i++) {
+		if (goods[i].id == req.params.id) {
+			goods[i] = chProd
+		}
+	}
+	res.status(200).json(chProd)
+})
+
+app.delete("/catalog/:id", (req, res) => {
+	goods = goods.filter(g => g.id != req.params.id)
+	res.status(200).json("Deleted")
 })
