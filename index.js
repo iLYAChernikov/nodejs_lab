@@ -3,6 +3,8 @@ import express from 'express'
 const app = express()
 const PORT = 5000
 
+app.use(express.json())
+
 app.listen(PORT, () => {
 	console.log('Server was started on port - ', PORT)
 })
@@ -71,4 +73,32 @@ app.get("/catalog/:id", (req, res) => {
 app.get("/catalog/f/:cat", (req, res) => {
 	const prods = goods.filter(g => g.category.toLowerCase() === req.params.cat.toLowerCase())
 	res.status(200).json(prods)
+})
+
+app.post("/catalog", (req, res) => {
+	const newProd = {
+		id: Date.now(),
+		name: req.body.name,
+		category: req.body.category,
+		unit: req.body.unit,
+		price: req.body.price,
+		weight_grams: req.body.weight_grams,
+		expiration_date: req.body.expiration_date
+	}
+	goods.push(newProd)
+	res.status(200).json(newProd)
+})
+
+app.post("/catalog/add/:cat", (req, res) => {
+	const newProd = {
+		id: Date.now(),
+		name: req.body.name,
+		category: req.params.cat,
+		unit: req.body.unit,
+		price: req.body.price,
+		weight_grams: req.body.weight_grams,
+		expiration_date: req.body.expiration_date
+	}
+	goods.push(newProd)
+	res.status(200).json(newProd)
 })
