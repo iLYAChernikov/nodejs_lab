@@ -45,18 +45,14 @@ const Goods = seq.define('product_item', {
 		allowNull: false,
 		unique: true
 	},
-	count: {
-		type: Sequelize.INTEGER,
-		allowNull: false
-	},
 	price: {
 		type: Sequelize.DOUBLE,
-		allowNull: true
+		allowNull: false
 	},
-	/*expiration_date: {
+	expiration_date: {
 		type: Sequelize.DATE,
 		allowNull: true
-	}*/
+	}
 })
 
 Category.hasMany(Product, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
