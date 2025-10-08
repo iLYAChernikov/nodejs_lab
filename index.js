@@ -15,126 +15,32 @@ seq
 	.catch((error) => console.error('Connection error:', error))
 
 seq.sync().then((result) => {
-	console.log('Synchronized')
+	console.log('DB Data was Synchronized')
 })
 
 app.listen(PORT, () => {
 	console.log('Server was started on port - ', PORT)
 })
 
-let goods = [
-	{
-		id: 1,
-		name: "Молоко",
-		category: "Молочные продукты",
-		unit: "литр",
-		price: 85,
-		weight_grams: 1000,
-		expiration_date: '2025-10-15'
-	},
-	{
-		id: 2,
-		name: "Яблоки",
-		category: "Фрукты",
-		unit: "килограмм",
-		price: 170,
-		weight_grams: 1000,
-		expiration_date: '2025-10-12'
-	},
-	{
-		id: 3,
-		name: "Тушёнка",
-		category: "Мясо",
-		unit: "консервы",
-		price: 250,
-		weight_grams: 350,
-		expiration_date: '2026-12-05'
-	},
-	{
-		id: 4,
-		name: "Куриное филе",
-		category: "Мясо",
-		unit: "килограмм",
-		price: 450,
-		weight_grams: 1000,
-		expiration_date: '2025-10-03',
-	},
-	{
-		id: 5,
-		name: "Бананы",
-		category: "Фрукты",
-		unit: "килограмм",
-		price: 150,
-		weight_grams: 1000,
-		expiration_date: '2025-10-10'
-	}
-]
+app.get("/start", (req, res) => {
+	Category.bulkCreate([{ name: "Молочные продукты" }, { name: "Фрукты" }, { name: "Мясо" }])
+	Product.bulkCreate([
+		{ name: "Молоко", unit: "литр", weight_grams: 1000, categoryId: 1 },
+		{ name: "Яблоки", unit: "килограмм", weight_grams: 1000, categoryId: 2 },
+		{ name: "Тушёнка", unit: "консервы", weight_grams: 350, categoryId: 3 },
+		{ name: "Куриное филе", unit: "килограмм", weight_grams: 1000, categoryId: 3 },
+		{ name: "Бананы", unit: "килограмм", weight_grams: 1000, categoryId: 2 }
+	])
+	Goods.bulkCreate([
+		{ price: 85.0, expiration_date: '2025-10-18', productId: 1 },
+		{ price: 170.0, expiration_date: '2025-10-12', productId: 2 },
+		{ price: 220.0, expiration_date: '2025-10-10', productId: 2 },
+		{ price: 250.0, expiration_date: '2026-12-05', productId: 3 },
+		{ price: 150.0, expiration_date: '2025-10-14', productId: 5 }
+	])
+	res.status(200).json('Data Base was filled')
+})
 
 app.get("/", (req, res) => {
 	res.status(200).json('Welcome to Market!!!')
-})
-
-app.get("/catalog", (req, res) => {
-	res.status(200).json(goods)
-})
-
-app.get("/catalog/:id", (req, res) => {
-	const prod = goods.find(g => g.id == req.params.id)
-	res.status(200).json(prod)
-})
-
-app.get("/catalog/f/:cat", (req, res) => {
-	const prods = goods.filter(g => g.category.toLowerCase() == req.params.cat.toLowerCase())
-	res.status(200).json(prods)
-})
-
-app.post("/catalog", (req, res) => {
-	const newProd = {
-		id: Date.now(),
-		name: req.body.name,
-		category: req.body.category,
-		unit: req.body.unit,
-		price: req.body.price,
-		weight_grams: req.body.weight_grams,
-		expiration_date: req.body.expiration_date
-	}
-	goods.push(newProd)
-	res.status(200).json(newProd)
-})
-
-app.post("/catalog/add/:cat", (req, res) => {
-	const newProd = {
-		id: Date.now(),
-		name: req.body.name,
-		category: req.params.cat,
-		unit: req.body.unit,
-		price: req.body.price,
-		weight_grams: req.body.weight_grams,
-		expiration_date: req.body.expiration_date
-	}
-	goods.push(newProd)
-	res.status(200).json(newProd)
-})
-
-app.put("/catalog/:id", (req, res) => {
-	const chProd = {
-		id: req.params.id,
-		name: req.body.name,
-		category: req.body.category,
-		unit: req.body.unit,
-		price: req.body.price,
-		weight_grams: req.body.weight_grams,
-		expiration_date: req.body.expiration_date
-	}
-	for (let i = 0; i < goods.length; i++) {
-		if (goods[i].id == req.params.id) {
-			goods[i] = chProd
-		}
-	}
-	res.status(200).json(chProd)
-})
-
-app.delete("/catalog/:id", (req, res) => {
-	goods = goods.filter(g => g.id != req.params.id)
-	res.status(200).json("Deleted")
 })
