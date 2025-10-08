@@ -1,4 +1,5 @@
-import { Product } from "../models";
+import { where } from "sequelize";
+import { Product } from "../models.js";
 
 class productController {
 	async create(req, res) {
@@ -19,17 +20,18 @@ class productController {
 	}
 
 	async change(req, res) {
-		const result = await Product.findOneAndUpdate({ id: req.body.id }, {
-			$set: {
+		const result = await Product.update(
+			{
 				categoryId: req.body.categoryId,
 				name: req.body.name,
 				unit: req.body.unit,
-				weight_grams: req.body.weight_grams } })
+				weight_grams: req.body.weight_grams
+			}, { where: { id: req.body.id } })
 		res.json(result)
 	}
 
 	async delete(req, res) {
-		const result = await Product.deleteOne({ id: req.params.id })
+		const result = await Product.destroy({ where: { id: req.params.id } })
 		res.json(result)
 	}
 }

@@ -1,4 +1,5 @@
-import { Category } from "../models";
+import { where } from "sequelize";
+import { Category } from "../models.js";
 
 class categoryController {
 	async create(req, res) {
@@ -16,12 +17,12 @@ class categoryController {
 	}
 
 	async change(req, res) {
-		const result = await Category.findOneAndUpdate({ id: req.body.id }, { $set: { name: req.body.name } })
+		const result = await Category.update({ name: req.body.name }, { where: { id: Number(req.body.id) } })
 		res.json(result)
 	}
 
 	async delete(req, res) {
-		const result = await Category.deleteOne({ id: req.params.id })
+		const result = await Category.destroy({ where: { id: req.params.id } })
 		res.json(result)
 	}
 }

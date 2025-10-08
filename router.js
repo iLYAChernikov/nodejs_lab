@@ -1,7 +1,7 @@
 import { Router } from "express";
-import categoryController from "./controllers/categoryController";
-import productController from "./controllers/productController";
-import goodsController from "./controllers/goodsController";
+import categoryController from "./controllers/categoryController.js";
+import productController from "./controllers/productController.js";
+import goodsController from "./controllers/goodsController.js";
 
 const router = new Router();
 
@@ -15,7 +15,7 @@ router.put('/category', categoryController.change)
 router.delete('/category/:id', categoryController.delete)
 
 // get all categories
-router.get('/category', categoryController.getAll)
+router.get('/categories', categoryController.getAll)
 
 // add product to category
 router.post('/category/add/:cat', productController.create)
@@ -27,16 +27,16 @@ router.put('/product', productController.change)
 router.delete('/product/:id', productController.delete)
 
 // get all products
-router.get('/product', productController.getAll)
+router.get('/products', productController.getAll)
 
 // add goods
 router.post('/catalog/add', goodsController.create)
 
-//	get goods
+//	get all goods
 router.get('/catalog', goodsController.getAll)
 
 // filter goods by category
-router.get('/catalog/f/:cat', goodsController.getByCategory)
+router.get('/catalog/f/:pr', goodsController.getByCategory)
 
 // get one of goods
 router.get('/catalog/:id', goodsController.getOne)
