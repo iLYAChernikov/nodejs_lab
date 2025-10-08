@@ -1,5 +1,7 @@
 import { Router } from "express";
 import categoryController from "./controllers/categoryController";
+import productController from "./controllers/productController";
+import goodsController from "./controllers/goodsController";
 
 const router = new Router();
 
@@ -16,42 +18,33 @@ router.delete('/category/:id', categoryController.delete)
 router.get('/category', categoryController.getAll)
 
 // add product to category
-router.post('/category/add/:cat')
+router.post('/category/add/:cat', productController.create)
 
 // change product
-router.put('/product')
+router.put('/product', productController.change)
 
 // delete product by id
-router.delete('/product/:id')
+router.delete('/product/:id', productController.delete)
+
+// get all products
+router.get('/product', productController.getAll)
 
 // add goods
-router.post('/catalog/add')
+router.post('/catalog/add', goodsController.create)
 
 //	get goods
-router.get('/catalog')
+router.get('/catalog', goodsController.getAll)
 
 // filter goods by category
-router.get('/catalog/f/:cat')
+router.get('/catalog/f/:cat', goodsController.getByCategory)
 
 // get one of goods
-router.get('/catalog/:id')
+router.get('/catalog/:id', goodsController.getOne)
 
 // change one of goods
-router.put('/catalog')
+router.put('/catalog', goodsController.change)
 
 // delete one of goods by id
-router.delete('/catalog/:id')
-
-// add category
-router.post('/category/add')
-
-// add product to category
-router.post('/category/add/:cat')
-
-// change category
-router.put('/category')
-
-// delete category by id
-router.delete('/category/:id')
+router.delete('/catalog/:id', goodsController.delete)
 
 export { router }

@@ -1,4 +1,3 @@
-import { json } from "sequelize";
 import { Category } from "../models";
 
 class categoryController {
