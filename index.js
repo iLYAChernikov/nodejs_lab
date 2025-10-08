@@ -1,9 +1,15 @@
 import express from 'express'
+import { seq } from './db.js'
 
 const app = express()
 const PORT = 5000
 
 app.use(express.json())
+
+seq
+	.authenticate()
+	.then(() => console.log('DB was connected'))
+	.catch((error) => console.error('Connection error:', error))
 
 app.listen(PORT, () => {
 	console.log('Server was started on port - ', PORT)
