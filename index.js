@@ -1,17 +1,20 @@
 import express from 'express'
 import { seq } from './models/db.js'
-import { Category, Product, Goods } from './models/models.js'
 import { router } from './routes/router.js'
+import fileUpload from 'express-fileupload'
 
 const app = express()
 const PORT = 5000
 
 app.use(express.json())
+app.use('/uploads', express.static('uploads'))
+app.use(fileUpload({}))
+
 app.use('/api', router)
 
 seq
 	.authenticate()
-	.then(() => console.log('MySQL DB was connected'))
+	.then(() => console.log('SQLite DB was connected'))
 	.catch((error) => console.error('Connection error:', error))
 
 seq.sync().then((result) => {
