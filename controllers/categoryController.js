@@ -1,5 +1,5 @@
 import { where } from "sequelize";
-import { Category } from "../models.js";
+import { Category } from "../models/models.js";
 
 class categoryController {
 	async create(req, res) {

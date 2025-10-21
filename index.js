@@ -1,7 +1,7 @@
 import express from 'express'
-import { seq } from './db.js'
-import { Category, Product, Goods } from './models.js'
-import { router } from './router.js'
+import { seq } from './models/db.js'
+import { Category, Product, Goods } from './models/models.js'
+import { router } from './routes/router.js'
 
 const app = express()
 const PORT = 5000

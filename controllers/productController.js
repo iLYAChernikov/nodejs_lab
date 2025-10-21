@@ -1,10 +1,22 @@
 import { where } from "sequelize";
-import { Product } from "../models.js";
+import { Product } from "../models/models.js";
 
 class productController {
-	async create(req, res) {
+	async createIntoCategory(req, res) {
 		const newProd = {
 			categoryId: req.params.cat,
+			name: req.body.name,
+			unit: req.body.unit,
+			weight_grams: req.body.weight_grams
+		}
+		const result = await Product.create(newProd)
+		console.log('product:', result)
+		res.json(newProd)
+	}
+
+	async create(req, res) {
+		const newProd = {
+			categoryId: req.body.categoryId,
 			name: req.body.name,
 			unit: req.body.unit,
 			weight_grams: req.body.weight_grams
