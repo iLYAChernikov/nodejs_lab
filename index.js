@@ -8,7 +8,11 @@ const PORT = 5000
 
 app.use(express.json())
 app.use('/uploads', express.static('uploads'))
-app.use(fileUpload({}))
+app.use(fileUpload({
+	createParentPath: true,					//	автосоздание папки загрузок
+	limits: { fileSize: 50 * 1024 * 1024 },	//	лимит - 50 Mb
+	useTempFiles: false						//	true - для больших файлов
+}))
 
 app.use('/api', router)
 
