@@ -41,14 +41,14 @@ async function initializeDatabase() {
 				{ email: "admin@box.ru", password: "123" }
 			])
 
-			console.log('Database was filled with initial data')
+			console.log('База данных была заполнена первичными данными')
 		} else {
-			console.log('Database already contains data, skipping initialization')
+			console.log('База данных уже содержит данные, поэтому инициализация пропущена')
 		}
 
 		process.exit(0)
 	} catch (error) {
-		console.error('Error during database initialization:', error)
+		console.error('Ошибка при инициализации базы данных:', error)
 		process.exit(1)
 	}
 }

@@ -1,3 +1,5 @@
+import dotenv from 'dotenv'
+dotenv.config()
 import { Sequelize } from "sequelize";
 //import mysql from 'mysql2'
 import sqlite3 from 'sqlite3'
@@ -17,7 +19,7 @@ const __dirname = path.dirname(__filename);
 
 const seq = new Sequelize({
 	dialect: 'sqlite',
-	storage: path.join(__dirname, 'market_app.sqlite'),
+	storage: path.join(__dirname, process.env.SQLITEDBNAME || 'market_app.sqlite'),
 	logging: true
 })
 

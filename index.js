@@ -1,10 +1,12 @@
+import dotenv from 'dotenv'
+dotenv.config()
 import express from 'express'
 import { seq } from './models/db.js'
 import { router } from './routes/router.js'
 import fileUpload from 'express-fileupload'
 
 const app = express()
-const PORT = 5000
+const PORT = process.env.PORT || 5000
 
 app.use(express.json())
 app.use('/uploads', express.static('uploads'))
@@ -22,7 +24,7 @@ seq
 	.catch((error) => console.error('Connection error:', error))
 
 seq.sync().then((result) => {
-	console.log('DB Data was Synchronized')
+	console.log('SQLite DB was Synchronized')
 })
 
 app.listen(PORT, () => {
