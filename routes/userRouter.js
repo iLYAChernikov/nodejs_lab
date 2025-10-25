@@ -4,7 +4,10 @@ import userController from "../controllers/userController.js";
 const router = new Router();
 
 // create user
-router.post('/user', userController.create)
+router.post('/registration', userController.create)
+
+// login user
+router.post('/login', userController.login)
 
 // change profile
 router.put('/user/:id', userController.changeProfile)

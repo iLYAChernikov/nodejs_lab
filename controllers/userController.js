@@ -3,15 +3,27 @@ import { User, Profile } from "../models/models.js";
 import { v4 } from "uuid"
 import path from 'path'
 import { error } from "console";
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 
 class userController {
 
-	async create(req, res) {
+	async create(req, res, next) {
 		try {
 			console.log(req.body)
+			const { email, password } = req.body;
+			if (!email || !password) {
+				return next(Error("Указаны некорректные email или пароль!"))
+			}
+			const visiter = await User.findOne({ where: { email: email } })
+			if (visiter) {
+				return next(Error("Пользователь с таким email уже зарегистрирован!"))
+			}
+
+			const hashedPass = await bcrypt.hash(password, 3)
 			const newUser = {
-				email: req.body.email,
-				password: req.body.password
+				email: email,
+				password: hashedPass
 			}
 			const result = await User.create(newUser)
 
@@ -27,6 +39,10 @@ class userController {
 		} catch (err) {
 			res.status(500).json({ error: err.message });
 		}
+	}
+
+	async login(req, res) {
+
 	}
 
 	async changeProfile(req, res) {

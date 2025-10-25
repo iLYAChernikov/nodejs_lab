@@ -18,6 +18,12 @@ app.use(fileUpload({
 
 app.use('/api', router)
 
+app.use((err, req, res, next) => {
+	console.log(err.message)
+	res.status(500).json(err.message)
+	next()
+})
+
 seq
 	.authenticate()
 	.then(() => console.log('SQLite DB was connected'))
