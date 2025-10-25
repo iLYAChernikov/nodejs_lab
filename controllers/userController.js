@@ -6,6 +6,10 @@ import { error } from "console";
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
+const getToken = (id, email) => {
+	return jwt.sign({ id, email }, String(process.env.PRIVATEKEY), { expiresIn: '10h' })
+}
+
 class userController {
 
 	async create(req, res, next) {
@@ -41,8 +45,21 @@ class userController {
 		}
 	}
 
-	async login(req, res) {
+	async login(req, res, next) {
+		const { email, password } = req.body
 
+		const visiter = await User.findOne({ where: { email: email } })
+		if (!visiter) {
+			return next(Error("Пользователь с данным email не зарегистрирован!"))
+		}
+
+		const compare = bcrypt.compareSync(password, visiter.password)
+		if (!compare) {
+			return next(Error("Неверный пароль!"))
+		}
+
+		const token = getToken(visiter.id, visiter.email)
+		res.json(token)
 	}
 
 	async changeProfile(req, res) {
