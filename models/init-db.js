@@ -1,5 +1,5 @@
 import { seq } from './db.js'
-import { Category, Product, Goods } from './models.js'
+import { Category, Product, Goods, User } from './models.js'
 
 async function initializeDatabase() {
 	try {
@@ -35,6 +35,10 @@ async function initializeDatabase() {
 				{ price: 220.0, expiration_date: '2025-10-10', productId: 2 },
 				{ price: 250.0, expiration_date: '2026-12-05', productId: 3 },
 				{ price: 150.0, expiration_date: '2025-10-14', productId: 5 }
+			])
+
+			await User.bulkCreate([
+				{ email: "admin@box.ru", password: "123" }
 			])
 
 			console.log('Database was filled with initial data')

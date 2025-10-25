@@ -55,7 +55,48 @@ const Goods = seq.define('product_item', {
 	}
 })
 
+const User = seq.define('user', {
+	id: {
+		type: Sequelize.INTEGER,
+		autoIncrement: true,
+		primaryKey: true,
+		allowNull: false,
+		unique: true
+	},
+	email: {
+		type: Sequelize.STRING,
+		allowNull: false
+	},
+	password: {
+		type: Sequelize.STRING,
+		allowNull: false
+	}
+})
+
+const Profile = seq.define('profile', {
+	id: {
+		type: Sequelize.INTEGER,
+		autoIncrement: true,
+		primaryKey: true,
+		allowNull: false,
+		unique: true
+	},
+	first_name: {
+		type: Sequelize.STRING,
+		allowNull: false
+	},
+	last_name: {
+		type: Sequelize.STRING,
+		allowNull: false
+	},
+	avatar: {
+		type: Sequelize.STRING,
+		allowNull: false
+	}
+})
+
 Category.hasMany(Product, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
 Product.hasOne(Goods, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+User.hasOne(Profile, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
 
-export { Category, Product, Goods }
+export { Category, Product, Goods, User, Profile }
