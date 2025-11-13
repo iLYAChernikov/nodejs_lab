@@ -1,5 +1,6 @@
 import { Router } from "express";
 import productController from "../controllers/productController.js";
+import { checkMiddleware } from "../checkMiddleware.js";
 
 const router = new Router();
 
@@ -7,10 +8,10 @@ const router = new Router();
 router.post('/product', productController.create)
 
 // change product
-router.put('/product', productController.change)
+router.put('/product', checkMiddleware, productController.change)
 
 // delete product by id
-router.delete('/product/:id', productController.delete)
+router.delete('/product/:id', checkMiddleware, productController.delete)
 
 // get all products
 router.get('/products', productController.getAll)
