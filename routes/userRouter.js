@@ -10,6 +10,9 @@ router.post('/registration', checkMiddleware, userController.create)
 // login user
 router.post('/login', userController.login)
 
+//	activate user profile
+router.post('/login/activate/:link', userController.activate)
+
 // change profile
 router.put('/user/:id', checkMiddleware, userController.changeProfile)
 

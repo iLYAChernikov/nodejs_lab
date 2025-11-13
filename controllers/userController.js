@@ -62,6 +62,10 @@ class userController {
 		res.json(token)
 	}
 
+	async activate(req, res, next) {
+		console.log('activate')
+	}
+
 	async changeProfile(req, res) {
 		try {
 			const { avatar } = req.files;
