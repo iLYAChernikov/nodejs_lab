@@ -5,7 +5,7 @@ import { checkMiddleware } from "../checkMiddleware.js";
 const router = new Router();
 
 // create user
-router.post('/registration', checkMiddleware, userController.create)
+router.post('/registration', userController.create)
 
 // login user
 router.post('/login', userController.login)
