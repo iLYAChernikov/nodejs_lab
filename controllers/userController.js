@@ -5,6 +5,7 @@ import path from 'path'
 import { error } from "console";
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import mailService from "../mailService.js";
 
 const getToken = (id, email) => {
 	return jwt.sign({ id, email }, String(process.env.PRIVATEKEY), { expiresIn: '10h' })
@@ -25,9 +26,12 @@ class userController {
 			}
 
 			const hashedPass = await bcrypt.hash(password, 3)
+			const activationLink = v4()
 			const newUser = {
 				email: email,
-				password: hashedPass
+				password: hashedPass,
+				activationLink: activationLink,
+				isActivated: false
 			}
 			const result = await User.create(newUser)
 
@@ -37,6 +41,8 @@ class userController {
 				avatar: ""
 			}
 			await Profile.create(profile)
+			
+			mailService.sendActivationLink(newUser.email, `http://${process.env.HOST}:${process.env.PORT}/api/login/activate/${activationLink}`)
 
 			res.status(200).json(newUser);
 
@@ -63,7 +69,11 @@ class userController {
 	}
 
 	async activate(req, res, next) {
-		console.log('activate')
+		const activationLink = req.params.link
+		const user = await User.findOne({ where: { activationLink } })
+		user.isActivated = true
+		user?.save()
+		res.json('Ваш профиль был активирован')
 	}
 
 	async changeProfile(req, res) {

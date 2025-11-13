@@ -70,6 +70,14 @@ const User = seq.define('user', {
 	password: {
 		type: Sequelize.STRING,
 		allowNull: false
+	},
+	activationLink: {
+		type: Sequelize.STRING,
+		allowNull: false
+	},
+	isActivated: {
+		type: Sequelize.BOOLEAN,
+		allowNull: false
 	}
 })
 

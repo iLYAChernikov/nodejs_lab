@@ -36,11 +36,11 @@ async function initializeDatabase() {
 				{ price: 250.0, expiration_date: '2026-12-05', productId: 3 },
 				{ price: 150.0, expiration_date: '2025-10-14', productId: 5 }
 			])
-
+/*
 			await User.bulkCreate([
 				{ email: "admin@box.ru", password: "123" }
 			])
-
+*/
 			console.log('База данных была заполнена первичными данными')
 		} else {
 			console.log('База данных уже содержит данные, поэтому инициализация пропущена')
