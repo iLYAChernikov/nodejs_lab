@@ -78,6 +78,10 @@ const User = seq.define('user', {
 	isActivated: {
 		type: Sequelize.BOOLEAN,
 		allowNull: false
+	},
+	resetPasswordToken: {
+		type: Sequelize.STRING,
+		allowNull: true
 	}
 })
 

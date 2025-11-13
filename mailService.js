@@ -28,6 +28,40 @@ class MailService {
 			`
 		})
 	}
+
+	async sendActivationLink(address, link) {
+		await this.transporter.sendMail({
+			from: process.env.MAIL_USER,
+			to: address,
+			subject: 'Активация учётной записи',
+			text: '',
+			html: `
+				<div>
+					<p>Для активации учётной записи перейдите по ссылке:
+						<a href=${link}>${link}</a>
+					</p>
+				</div>
+			`
+		})
+	}
+
+	async sendPasswordRecoveryLink(address, link) {
+		await this.transporter.sendMail({
+			from: process.env.MAIL_USER,
+			to: address,
+			subject: 'Восстановление пароля',
+			text: '',
+			html: `
+				<div>
+					<p>Вы сделали запрос на восстановление пароля. Если это были не Вы, проигнорируйте данное письмо</p>
+					<p>Для восстановления пароля перейдите по ссылке:
+						<a href=${link}>${link}</a>
+					</p>
+					<p>Эта ссылка действительная только 1 час</p>
+				</div>
+			`
+		})
+	}
 }
 
 export default new MailService()
