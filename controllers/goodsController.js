@@ -1,5 +1,5 @@
 import { where } from "sequelize";
-import { Goods } from "../models/models.js";
+//import { Goods } from "../models/models.js";
 
 class goodsController {
 	async create(req, res) {

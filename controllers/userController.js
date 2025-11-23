@@ -1,5 +1,5 @@
 import { where } from "sequelize";
-import { User, Profile } from "../models/models.js";
+import { User } from "../models/models.js";
 import { v4 } from "uuid"
 import path from 'path'
 import { error } from "console";
