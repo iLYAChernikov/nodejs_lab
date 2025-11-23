@@ -4,6 +4,7 @@ import { productRouter } from "./productRouter.js";
 import { orderRouter } from "./orderRouter.js";
 import { fileRouter } from "./fileRouter.js";
 import { userRouter } from "./userRouter.js";
+import { reviewRouter } from "./reviewRouter.js";
 
 const router = new Router();
 
@@ -12,5 +13,6 @@ router.use(productRouter);
 router.use(orderRouter);
 router.use(fileRouter);
 router.use(userRouter);
+router.use(reviewRouter);
 
 export { router }
