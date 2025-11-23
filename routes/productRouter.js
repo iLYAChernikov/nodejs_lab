@@ -8,7 +8,7 @@ const router = new Router();
 router.post('/product', productController.create)
 
 // change product
-router.put('/product', checkMiddleware, productController.change)
+router.put('/product/:id',  productController.change)
 
 // delete product by id
 router.delete('/product/:id', checkMiddleware, productController.delete)

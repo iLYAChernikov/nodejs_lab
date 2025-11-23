@@ -4,7 +4,8 @@ import { Category } from "../models/models.js";
 class categoryController {
 	async create(req, res) {
 		const newCategory = {
-			name: req.body.name
+			name: req.body.name,
+			description: req.body.description
 		}
 		const categ = await Category.create(newCategory)
 		console.log('category:', categ)
@@ -17,7 +18,8 @@ class categoryController {
 	}
 
 	async change(req, res) {
-		const result = await Category.update({ name: req.body.name }, { where: { id: Number(req.body.id) } })
+		const { name, description } = req.body;
+		const result = await Category.update({ name, description }, { where: { id: Number(req.body.id) } })
 		res.json(result)
 	}
 

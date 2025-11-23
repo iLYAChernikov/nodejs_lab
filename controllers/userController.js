@@ -34,16 +34,13 @@ class userController {
 				email: email,
 				password: hashedPass,
 				activationLink: activationLink,
-				isActivated: false
-			}
-			const result = await User.create(newUser)
-
-			const profile = {
+				isActivated: false,
 				first_name: "",
 				last_name: "",
-				avatar: ""
+				avatar: "",
+				resetPasswordToken: null
 			}
-			await Profile.create(profile)
+			const result = await User.create(newUser)
 
 			mailService.sendActivationLink(newUser.email, `http://${process.env.HOST}:${process.env.PORT}/api/login/activate/${activationLink}`)
 
@@ -139,7 +136,7 @@ class userController {
 			const { first_name, last_name } = req.body
 			const avatarLink = '/uploads/' + fileName
 
-			const result = await Profile.update({
+			const result = await User.update({
 				first_name,
 				last_name,
 				avatar: avatarLink,
@@ -163,7 +160,7 @@ class userController {
 
 	async getAllProfiles(req, res) {
 		try {
-			const all = await Profile.findAll()
+			const all = await User.findAll()
 			res.json(all)
 		} catch (err) {
 			res.status(500).json({ error: err.message });
@@ -172,7 +169,7 @@ class userController {
 
 	async getOneProfileById(req, res) {
 		try {
-			const result = await Profile.findOne({ where: { id: req.params.id } })
+			const result = await User.findOne({ where: { id: req.params.id } })
 			res.json(result)
 		} catch (err) {
 			res.status(500).json({ error: err.message });

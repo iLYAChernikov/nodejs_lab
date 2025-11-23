@@ -18,6 +18,6 @@ router.delete('/category/:id', checkMiddleware, categoryController.delete)
 router.get('/categories', categoryController.getAll)
 
 // add product to category
-router.post('/category/add/:cat', checkMiddleware, productController.createIntoCategory)
+router.post('/category/add/:cat', productController.createIntoCategory)
 
 export const categoryRouter = router;
