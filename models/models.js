@@ -41,6 +41,10 @@ const User = seq.define('user', {
 	resetPasswordToken: {
 		type: Sequelize.STRING,
 		allowNull: true
+	},
+	role: {
+		type: Sequelize.STRING,
+		allowNull: false
 	}
 });
 
@@ -156,17 +160,17 @@ const Review = seq.define("review", {
 	}
 });
 
-User.hasMany(Order, { onDelete: 'CASCADE' });
+User.hasMany(Order, { onDelete: 'CASCADE', onUpdate: 'CASCADE' });
 Order.belongsTo(User);
-User.hasMany(Review, { onDelete: 'CASCADE' });
+User.hasMany(Review, { onDelete: 'SET NULL', onUpdate: 'CASCADE' });
 Review.belongsTo(User);
-Product.hasOne(Review, { onDelete: 'CASCADE' });
+Product.hasOne(Review, { onDelete: 'CASCADE', onUpdate: 'CASCADE' });
 
-Order.hasMany(OrderItem, { onDelete: 'CASCADE' });
-Product.hasOne(OrderItem, { onDelete: 'CASCADE' });
-Order.hasOne(OrderItem, { onDelete: 'CASCADE' });
+Order.hasMany(OrderItem, { onDelete: 'CASCADE', onUpdate: 'CASCADE' });
+Product.hasOne(OrderItem, { onDelete: 'CASCADE', onUpdate: 'CASCADE' });
+Order.hasOne(OrderItem, { onDelete: 'CASCADE', onUpdate: 'CASCADE' });
 
-Category.hasOne(Product, { onDelete: 'CASCADE' });
+Category.hasOne(Product, { onDelete: 'SET NULL', onUpdate: 'CASCADE' });
 Product.belongsTo(Category);
 
 export { User, Category, Product, Order, OrderItem, Review }

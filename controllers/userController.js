@@ -7,12 +7,12 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import mailService from "../mailService.js";
 
-const getToken = (id, email) => {
-	return jwt.sign({ id, email }, String(process.env.PRIVATE_KEY), { expiresIn: '10h' })
+const getToken = (id, email, role) => {
+	return jwt.sign({ id, email, role }, String(process.env.PRIVATE_KEY), { expiresIn: '10h' })
 }
 
-const getResetToken = (id, email) => {
-	return jwt.sign({ id, email }, String(process.env.RESET_PASSWORD_KEY), { expiresIn: '1h' })
+const getResetToken = (id, email, role) => {
+	return jwt.sign({ id, email, role }, String(process.env.RESET_PASSWORD_KEY), { expiresIn: '1h' })
 }
 
 class userController {
@@ -38,13 +38,15 @@ class userController {
 				first_name: "",
 				last_name: "",
 				avatar: "",
-				resetPasswordToken: null
+				resetPasswordToken: null,
+				role: "USER"
 			}
 			const result = await User.create(newUser)
 
 			mailService.sendActivationLink(newUser.email, `http://${process.env.HOST}:${process.env.PORT}/api/login/activate/${activationLink}`)
+			const token = getToken(newUser.id, newUser.email, newUser.role)
 
-			res.status(200).json(newUser);
+			res.status(200).json(token);
 
 		} catch (err) {
 			res.status(500).json({ error: err.message });
@@ -63,8 +65,7 @@ class userController {
 		if (!compare) {
 			return next(Error("Неверный пароль!"))
 		}
-
-		const token = getToken(visiter.id, visiter.email)
+		const token = getToken(visiter.id, visiter.email, visiter.role)
 		res.json(token)
 	}
 
@@ -84,7 +85,7 @@ class userController {
 		if (!user)
 			return res.status(500).json({ message: 'Пользователь с таким email не зарегистрирован' })
 
-		const resetToken = getResetToken(user.id, user.email)
+		const resetToken = getResetToken(user.id, user.email, user.role)
 		user.resetPasswordToken = resetToken
 		await user.save()
 
@@ -102,7 +103,7 @@ class userController {
 	}
 
 	async resetPassword(req, res) {
-		try {			
+		try {
 			const { password } = req.body
 			console.log(password)
 			const { token } = req.params
@@ -144,6 +145,20 @@ class userController {
 				{ where: { id: req.params.id } })
 
 			res.status(200).json("avatar link: " + avatarLink)
+		} catch (err) {
+			res.status(500).json({ error: err.message });
+		}
+	}
+
+	async changeRole(req, res) {
+		try {
+			const { role } = req.body;
+			const result = await User.update({
+				role
+			},
+				{ where: { id: req.params.id } })
+
+			res.status(200).json("Role was changed to " + role)
 		} catch (err) {
 			res.status(500).json({ error: err.message });
 		}
