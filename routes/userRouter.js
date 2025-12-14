@@ -1,6 +1,7 @@
 import { Router } from "express";
 import userController from "../controllers/userController.js";
 import { checkMiddleware } from "../checkMiddleware.js";
+import { checkRoleMiddleware } from "../checkRoleMiddleware.js";
 
 const router = new Router();
 
@@ -22,13 +23,16 @@ router.post('/reset-password/:token', userController.resetPassword)
 // change profile
 router.put('/user/:id', checkMiddleware, userController.changeProfile)
 
+// change profile role
+router.put('/user-role/:id', checkRoleMiddleware('ADMIN'), userController.changeRole)
+
 // delete profile by id
-router.delete('/user/:id', checkMiddleware, userController.deleteById)
+router.delete('/user/:id', checkRoleMiddleware('ADMIN'), userController.deleteById)
 
 // get one profile
 router.get('/user/:id', userController.getOneProfileById)
 
 // get all profiles
-router.get('/users', checkMiddleware, userController.getAllProfiles)
+router.get('/users', checkRoleMiddleware('MODERATOR'), userController.getAllProfiles)
 
 export const userRouter = router;

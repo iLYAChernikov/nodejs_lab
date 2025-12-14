@@ -1,6 +1,7 @@
 import { Router } from "express";
 import reviewController from "../controllers/reviewController.js";
 import { checkMiddleware } from "../checkMiddleware.js";
+import { checkRoleMiddleware } from "../checkRoleMiddleware.js";
 
 const router = new Router();
 
@@ -8,10 +9,10 @@ const router = new Router();
 router.post('/review/add', checkMiddleware, reviewController.create)
 
 // change post
-router.put('/review', checkMiddleware, reviewController.change)
+router.put('/review', checkRoleMiddleware('MODERATOR'), reviewController.change)
 
 // delete post
-router.delete('/review', checkMiddleware, reviewController.delete)
+router.delete('/review', checkRoleMiddleware('ADMIN'), reviewController.delete)
 
 // get all posts
 router.get('/reviews', reviewController.getAll)
